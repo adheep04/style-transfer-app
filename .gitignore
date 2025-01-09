@@ -1,0 +1,10 @@
+/aws/
+env/
+setup-guide.md
+__pycache__/
+*.pyc
+node_modules/
+build/
+.env
+.env.local
+/contexts
