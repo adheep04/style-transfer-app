@@ -5,7 +5,9 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - .backend/temp/imgs:/app/output_imgs
+      - ./backend/temp/imgs:/app/output_imgs
+      - ./backend/model_weights:/app/torch_home/model_weights/vgg
+      - pip-cache:/root/.cache/pip
     environment:
       - PORT=8000
       - HOST=0.0.0.0

@@ -8,3 +8,5 @@ build/
 .env
 .env.local
 /contexts
+/backend/model_weights
+

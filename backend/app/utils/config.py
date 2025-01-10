@@ -2,7 +2,7 @@ def get_config():
     return {
         'max_steps' : 18000,
         'lr' : 0.2,
-        'scheduler' : 0.75,
+        'factor' : 0.75,
         'freq' : 10,
         'alpha' : 1,
         'beta' : 1e-6,

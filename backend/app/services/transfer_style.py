@@ -141,7 +141,8 @@ def transfer_style(
             'style_loss' : style_loss.item(),
             'content_loss' : content_loss.item(),
             'step' : step,
-            'norm' : torch.norm(pred_params.grad)
+            'norm' : torch.norm(pred_params.grad),
+            'loss' : (style_loss.item() + content_loss.item())
             }
         
     return pred_params.float()

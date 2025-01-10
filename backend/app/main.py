@@ -56,8 +56,10 @@ async def start_transfer():
         if i == 2:
             break
         
+        print(f"loss: {img['loss']}")
+        
         save_tensor_as_image(
-            img_tensor=img.clone(),
+            img_tensor=img['tensor'].clone(),
             path=f"/app/output_imgs/trial_{config['trial']}/im_{i}.png"
             )
         

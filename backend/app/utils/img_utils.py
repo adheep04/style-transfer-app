@@ -37,10 +37,11 @@ def img_path_to_tensor(img_path, crop=True, scale=True):
 
 # saves tensor as image in given path
 def save_tensor_as_image(img_tensor, path):
-    # Ensure the directory exists
-    save_dir = Path(path)
-    save_dir.mkdir(exist_ok=True)
-
+    
+    # Ensure the parent directory exists
+    save_dir = Path(path).parent
+    save_dir.mkdir(parents=True, exist_ok=True)
+    
     # Make sure we are not tracking gradients and work on a CPU copy
     img_tensor = img_tensor.detach().cpu().clone()
 
@@ -62,4 +63,4 @@ def save_tensor_as_image(img_tensor, path):
 
     # Convert to PIL Image
     image = Image.fromarray(img_array)
-    image.save(path)    
+    image.save(save_dir)    
