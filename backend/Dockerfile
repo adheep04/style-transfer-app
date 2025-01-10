@@ -18,6 +18,16 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
+# make directory to store model weights
+RUN mkdir -p /app/torch_home/model_weights/vgg
+
+# for successive images
+RUN mkdir -p /app/output_imgs
+
+# set torch's home directory to this directory so it caches
+# model weights here
+ENV TORCH_HOME=/app/torch_home/model_weights/vgg
+
 # Create a non-privileged user that the app will run under.
 # See https://docs.docker.com/go/dockerfile-user-best-practices/
 ARG UID=10001
@@ -28,7 +38,9 @@ RUN adduser \
     --shell "/sbin/nologin" \
     --no-create-home \
     --uid "${UID}" \
-    appuser
+    appuser && \
+    # give user permission to edit this directory
+    chown -R appuser:appuser /app/torch_home/model_weights/vgg
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
@@ -37,6 +49,10 @@ RUN adduser \
 RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=requirements.txt,target=requirements.txt \
     python -m pip install -r requirements.txt
+
+# run script to download model
+COPY app/utils/download_model.py .
+RUN python download_model.py
 
 # Switch to the non-privileged user to run the application.
 USER appuser
@@ -48,4 +64,4 @@ COPY . .
 EXPOSE 8000
 
 # Run the application.
-CMD uvicorn app.main:app --host 0.0.0.0 --port 8000
+CMD uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload

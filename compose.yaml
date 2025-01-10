@@ -1,28 +1,30 @@
 services:
-  frontend:
-    build:
-      context: ./frontend
-      target: development
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    depends_on:
-      - backend
-    environment:
-      - REACT_APP_API_URL=http://localhost:8000
-
   backend:
     build:
       context: ./backend
     ports:
       - "8000:8000"
     volumes:
-      - ./backend:/app
+      - .backend/temp/imgs:/app/output_imgs
     environment:
       - PORT=8000
       - HOST=0.0.0.0
+    develop:
+      watch:
+        - action: sync
+          path: ./backend
+          target: /app
+        - action: rebuild
+          path: ./backend/requirements.txt
+        - action: rebuild
+          path: ./backend/Dockerfile
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
 
 networks:
   default:

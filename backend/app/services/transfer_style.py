@@ -111,7 +111,7 @@ def transfer_style(
     # learning rate scheduler
     scheduler = lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=config['factor'], patience=config['patience'])
     
-    for step in range(config['steps']):
+    for step in range(config['max_steps']):
         # reset gradients
         optimizer.zero_grad()
 
