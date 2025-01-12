@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from PIL import Image
 
+from fastapi import UploadFile, File
 
 from app.utils.config import get_config
 from app.services.transfer_style import transfer_style
@@ -53,10 +53,8 @@ async def start_transfer():
     
     for i, img in enumerate(img_generator):
         
-        if i == 2:
+        if i == 2000:
             break
-        
-        print(f"loss: {img['loss']}")
         
         save_tensor_as_image(
             img_tensor=img['tensor'].clone(),
@@ -64,5 +62,7 @@ async def start_transfer():
             )
         
     return('finished!')
-    
+
+app.post("/upload")
+async def upload_imgs():
     

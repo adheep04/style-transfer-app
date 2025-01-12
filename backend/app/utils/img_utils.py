@@ -63,4 +63,4 @@ def save_tensor_as_image(img_tensor, path):
 
     # Convert to PIL Image
     image = Image.fromarray(img_array)
-    image.save(save_dir)    
+    image.save(path)    
