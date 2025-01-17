@@ -10,7 +10,9 @@ def get_config():
         'patience' : 6,
         'content_layer' : 2,
         'style_layer' : 5,
-        'content_path' : 'temp/data/content_img.jpg',
-        'style_path' : 'temp/data/style_img.jpg',
+        'content_path' : './temp/data/content.jpg',
+        'style_path' : './temp/data/style.jpg',
+        'content_dir' : './temp/data',
+        'style_dir' : './temp/data',
         'wl' : [0.2, 0.2, 0.2, 0.2, 0.2]
     }

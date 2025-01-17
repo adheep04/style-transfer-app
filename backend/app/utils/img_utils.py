@@ -2,6 +2,7 @@ from PIL import Image
 from torchvision import transforms
 import torch
 from pathlib import Path
+from fastapi import UploadFile, File
 
 def img_path_to_tensor(img_path, crop=True, scale=True):
     # open image
@@ -35,6 +36,7 @@ def img_path_to_tensor(img_path, crop=True, scale=True):
     # add a batch dimension: (1, 3, 224, 224)
     return tensor.unsqueeze(0)
 
+
 # saves tensor as image in given path
 def save_tensor_as_image(img_tensor, path):
     
@@ -64,3 +66,12 @@ def save_tensor_as_image(img_tensor, path):
     # Convert to PIL Image
     image = Image.fromarray(img_array)
     image.save(path)    
+
+
+def save_img_file_to_path(img_file: UploadFile, path, name):
+    path = Path(path)
+    assert path.exists(), "save image dir doesn't exist"
+    img = Image.open(img_file.file)
+    assert isinstance(img, Image.Image), "save_img_to_path only takes PIL Image objects"
+    print(f"saving to {path}")
+    img.save(path / name)

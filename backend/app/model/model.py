@@ -22,11 +22,13 @@ class StyleRepresentation(nn.Module):
         return G
     
 class StyleLearner(nn.Module):
-    def __init__(self):
+    def __init__(self, weights_path):
         super().__init__()
         
         # retrieve and modify base pretrained model to align with paper specifications (VGG 19 layers)
-        self.sections = self._edit_base_model(models.vgg19(weights=models.VGG19_Weights.IMAGENET1K_V1))
+        base_model = models.vgg19()
+        state_dict = torch.load(weights_path)
+        self.sections = self._edit_base_model(base_model)
         
         # maps # of sections completed -> num_filters
         self.NUM_FILTERS_MAP = {
